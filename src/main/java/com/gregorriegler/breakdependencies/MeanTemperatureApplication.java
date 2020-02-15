@@ -67,11 +67,11 @@ public class MeanTemperatureApplication {
     private static final Logger LOG = LoggerFactory.getLogger(MeanTemperatureApplication.class);
 
     public static void main(String[] args) {
-        new MeanTemperatureApplication().printMeans();
+        new MeanTemperatureApplication().printMeans(YearMonth.now());
     }
 
-    private void printMeans() {
-        YearMonth lastMonth = YearMonth.now().minusMonths(2); // the climate api might not yet have data for the last month
+    private void printMeans(YearMonth month) {
+        YearMonth lastMonth = month.minusMonths(2); // the climate api might not yet have data for the last month
 
         for (int year = lastMonth.getYear() - 50; year <= lastMonth.getYear(); year++) {
             double sum = 0;
