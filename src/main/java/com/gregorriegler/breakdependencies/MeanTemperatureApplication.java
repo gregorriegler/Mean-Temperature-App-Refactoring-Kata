@@ -80,9 +80,7 @@ public class MeanTemperatureApplication {
             YearMonth begin = end.minusMonths(3);
 
             try {
-                double[] meanList = fetchMeanList(begin, end);
-
-                DoubleStream.of(meanList).average().ifPresent(avg -> print(begin, end, avg));
+                DoubleStream.of(fetchMeanList(begin, end)).average().ifPresent(avg -> print(begin, end, avg));
             } catch (Exception e) {
                 LOG.error("an error occured");
             }
