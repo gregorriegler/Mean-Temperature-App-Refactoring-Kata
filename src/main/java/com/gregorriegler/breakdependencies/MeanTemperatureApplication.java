@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.time.YearMonth;
+import java.util.stream.DoubleStream;
 
 /**
  * Prints the mean temperatures of 3 recent months measured in Vienna over the last 50 years for comparison.
@@ -75,25 +76,13 @@ public class MeanTemperatureApplication {
         YearMonth lastMonth = month.minusMonths(2); // the climate api might not yet have data for the last month
 
         for (int year = lastMonth.getYear() - 50; year <= lastMonth.getYear(); year++) {
-            double sum = 0;
-            long count = 0;
-
             YearMonth end = lastMonth.withYear(year);
             YearMonth begin = end.minusMonths(3);
 
             try {
                 double[] meanList = fetchMeanList(begin, end);
 
-                for (int i = 0; i < meanList.length; i++) {
-                    double mean = meanList[i];
-                    sum += mean;
-                    count++;
-                }
-
-                if (count > 0) {
-                    double avg = sum / count;
-                    print(begin, end, avg);
-                }
+                DoubleStream.of(meanList).average().ifPresent(avg -> print(begin, end, avg));
             } catch (Exception e) {
                 LOG.error("an error occured");
             }
