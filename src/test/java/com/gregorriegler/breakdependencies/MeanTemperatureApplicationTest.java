@@ -50,6 +50,29 @@ class MeanTemperatureApplicationTest {
     }
 
     @Test
+    void should_not_print_empty_result() {
+        List<Object[]> ranges = new ArrayList<>();
+        List<Object[]> prints = new ArrayList<>();
+
+        MeanTemperatureApplication application = new MeanTemperatureApplication() {
+            @Override
+            protected double[] fetchMeanList(YearMonth begin, YearMonth end) {
+                ranges.add(new Object[]{begin, end});
+                return new double[]{};
+            }
+
+            @Override
+            protected void print(YearMonth begin, YearMonth end, double avg) {
+                prints.add(new Object[]{begin, end, avg});
+            }
+        };
+
+        application.printMeans(YearMonth.of(2020, 2));
+
+        assertThat(prints).isEmpty();
+    }
+
+    @Test
     void should_log_error() {
         Appender appender = mock(Appender.class);
         ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(MeanTemperatureApplication.class);
