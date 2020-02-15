@@ -11,7 +11,7 @@ import java.util.stream.DoubleStream;
 
 /**
  * Prints the mean temperatures of 3 recent months measured in Vienna over the last 50 years for comparison.
- *
+ * <p>
  * Example Output:
  * 1969-09 to 1969-12 mean temperature: 7.7 °C
  * 1970-09 to 1970-12 mean temperature: 8.2 °C
@@ -76,11 +76,10 @@ public class MeanTemperatureApplication {
         YearMonth lastMonth = month.minusMonths(2); // the climate api might not yet have data for the last month
 
         for (int year = lastMonth.getYear() - 50; year <= lastMonth.getYear(); year++) {
-            YearMonth end = lastMonth.withYear(year);
-            YearMonth begin = end.minusMonths(3);
+            Last3Months last3Months = Last3Months.of(lastMonth.withYear(year));
 
             try {
-                DoubleStream.of(fetchMeanList(begin, end)).average().ifPresent(avg -> print(begin, end, avg));
+                DoubleStream.of(fetchMeanList(last3Months.first, last3Months.last)).average().ifPresent(avg -> print(last3Months.first, last3Months.last, avg));
             } catch (Exception e) {
                 LOG.error("an error occured");
             }
@@ -94,5 +93,19 @@ public class MeanTemperatureApplication {
 
     protected void print(YearMonth begin, YearMonth end, double avg) {
         System.out.println(begin + " to " + end + " mean temperature: " + Math.round(avg * 10) / 10D + " °C");
+    }
+}
+
+class Last3Months {
+    public final YearMonth first;
+    public final YearMonth last;
+
+    public static Last3Months of(YearMonth last) {
+        return new Last3Months(last);
+    }
+
+    private Last3Months(YearMonth last) {
+        this.first = last.minusMonths(3);
+        this.last = last;
     }
 }
