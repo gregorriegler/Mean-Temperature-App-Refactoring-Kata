@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.YearMonth;
 
@@ -81,8 +82,7 @@ public class MeanTemperatureApplication {
             YearMonth begin = end.minusMonths(3);
 
             try {
-                URL url = new URL("https://api.meteostat.net/v1/history/monthly?station=11035&start=" + begin + "&end=+" + end + "&key=" + System.getProperty("key"));
-                double[] meanList = JsonPath.parse(url).read("$.data[*].temperature_mean", double[].class);
+                double[] meanList = fetchMeanList(begin, end);
 
                 for (int i = 0; i < meanList.length; i++) {
                     double mean = meanList[i];
@@ -97,5 +97,10 @@ public class MeanTemperatureApplication {
                 LOG.error("an error occured");
             }
         }
+    }
+
+    protected double[] fetchMeanList(YearMonth begin, YearMonth end) throws IOException {
+        URL url = new URL("https://api.meteostat.net/v1/history/monthly?station=11035&start=" + begin + "&end=+" + end + "&key=" + System.getProperty("key"));
+        return JsonPath.parse(url).read("$.data[*].temperature_mean", double[].class);
     }
 }
