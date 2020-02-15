@@ -91,7 +91,8 @@ public class MeanTemperatureApplication {
                 }
 
                 if (count > 0) {
-                    System.out.println(begin + " to " + end + " mean temperature: " + Math.round(sum / count * 10) / 10D + " °C");
+                    double avg = sum / count;
+                    print(begin, end, avg);
                 }
             } catch (Exception e) {
                 LOG.error("an error occured");
@@ -102,5 +103,9 @@ public class MeanTemperatureApplication {
     protected double[] fetchMeanList(YearMonth begin, YearMonth end) throws IOException {
         URL url = new URL("https://api.meteostat.net/v1/history/monthly?station=11035&start=" + begin + "&end=+" + end + "&key=" + System.getProperty("key"));
         return JsonPath.parse(url).read("$.data[*].temperature_mean", double[].class);
+    }
+
+    protected void print(YearMonth begin, YearMonth end, double avg) {
+        System.out.println(begin + " to " + end + " mean temperature: " + Math.round(avg * 10) / 10D + " °C");
     }
 }
