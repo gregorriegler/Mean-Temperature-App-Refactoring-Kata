@@ -72,8 +72,7 @@ class MeanTemperatureApplicationTest {
     }
 
     private Object logMessage(String message) {
-        return argThat(
-            o -> ((ILoggingEvent) o).getFormattedMessage().equals(message));
+        return argThat(o -> ((ILoggingEvent) o).getFormattedMessage().equals(message));
     }
 
     private static class MeanTemperatureApplicationTss extends MeanTemperatureApplication {
