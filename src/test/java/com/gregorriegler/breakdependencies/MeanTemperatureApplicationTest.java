@@ -52,8 +52,7 @@ class MeanTemperatureApplicationTest {
         Appender appender = mockLogAppender();
 
         MeanTemperatureApplication application = new MeanTemperatureApplication() {
-            @Override
-            protected double[] fetchMeanList(YearMonth begin, YearMonth end) throws IOException {
+            protected double[] fetchMeanList(MonthRange monthRange) throws IOException {
                 throw new IOException("yep");
             }
         };
@@ -87,8 +86,8 @@ class MeanTemperatureApplicationTest {
         }
 
         @Override
-        protected double[] fetchMeanList(YearMonth begin, YearMonth end) {
-            ranges.add(new Object[]{begin, end});
+        protected double[] fetchMeanList(MonthRange monthRange) throws IOException {
+            ranges.add(new Object[]{monthRange.first, monthRange.last});
             return meanList;
         }
 

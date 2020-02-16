@@ -83,7 +83,7 @@ public class MeanTemperatureApplication {
 
     private void printMonths(MonthRange monthRange) {
         try {
-            DoubleStream.of(fetchMeanList(monthRange.first, monthRange.last))
+            DoubleStream.of(fetchMeanList(monthRange))
                 .average()
                 .ifPresent(avg -> print(monthRange.first, monthRange.last, avg));
         } catch (Exception e) {
@@ -91,8 +91,8 @@ public class MeanTemperatureApplication {
         }
     }
 
-    protected double[] fetchMeanList(YearMonth begin, YearMonth end) throws IOException {
-        URL url = new URL("https://api.meteostat.net/v1/history/monthly?station=11035&start=" + begin + "&end=+" + end + "&key=" + System.getProperty("key"));
+    protected double[] fetchMeanList(MonthRange monthRange) throws IOException {
+        URL url = new URL("https://api.meteostat.net/v1/history/monthly?station=11035&start=" + monthRange.first + "&end=+" + monthRange.last + "&key=" + System.getProperty("key"));
         return JsonPath.parse(url).read("$.data[*].temperature_mean", double[].class);
     }
 
