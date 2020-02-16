@@ -7,7 +7,10 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.time.YearMonth;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 /**
  * Prints the mean temperatures of 3 recent months measured in Vienna over the last 50 years for comparison.
@@ -73,16 +76,18 @@ public class MeanTemperatureApplication {
     }
 
     public void printMeans(YearMonth month) {
-        YearMonth lastMonth = month.minusMonths(2); // the climate api might not yet have data for the last month
+        MonthRange.last3Months(month.minusMonths(2).minusYears(50))
+            .nextYears(51)
+            .forEach(this::printMonths);
+    }
 
-        for (int year = lastMonth.getYear() - 50; year <= lastMonth.getYear(); year++) {
-            Last3Months last3Months = Last3Months.of(lastMonth.withYear(year));
-
-            try {
-                DoubleStream.of(fetchMeanList(last3Months.first, last3Months.last)).average().ifPresent(avg -> print(last3Months.first, last3Months.last, avg));
-            } catch (Exception e) {
-                LOG.error("an error occured");
-            }
+    private void printMonths(MonthRange monthRange) {
+        try {
+            DoubleStream.of(fetchMeanList(monthRange.first, monthRange.last))
+                .average()
+                .ifPresent(avg -> print(monthRange.first, monthRange.last, avg));
+        } catch (Exception e) {
+            LOG.error("an error occured");
         }
     }
 
@@ -96,16 +101,26 @@ public class MeanTemperatureApplication {
     }
 }
 
-class Last3Months {
+class MonthRange {
     public final YearMonth first;
     public final YearMonth last;
 
-    public static Last3Months of(YearMonth last) {
-        return new Last3Months(last);
+    public static MonthRange last3Months(YearMonth month) {
+        return new MonthRange(month.minusMonths(3), month);
     }
 
-    private Last3Months(YearMonth last) {
-        this.first = last.minusMonths(3);
+    private MonthRange(YearMonth first, YearMonth last) {
+        this.first = first;
         this.last = last;
+    }
+
+    public List<MonthRange> nextYears(int years) {
+        return IntStream.range(0, years)
+            .mapToObj(this::addYears)
+            .collect(Collectors.toList());
+    }
+
+    private MonthRange addYears(int years) {
+        return MonthRange.last3Months(this.last.plusYears(years));
     }
 }
