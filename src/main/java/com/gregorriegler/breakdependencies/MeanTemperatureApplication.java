@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.time.Clock;
 import java.time.YearMonth;
 
 /**
@@ -29,7 +30,11 @@ public class MeanTemperatureApplication {
     private static final Logger LOG = LoggerFactory.getLogger(MeanTemperatureApplication.class);
 
     public static void main(String[] args) {
-        YearMonth lastMonth = YearMonth.now().minusMonths(2); // the climate api might not yet have data for the last month
+        new MeanTemperatureApplication().printHistoricalMeanTemperatures(Clock.systemDefaultZone());
+    }
+
+    public void printHistoricalMeanTemperatures(Clock clock) {
+        YearMonth lastMonth = YearMonth.now(clock).minusMonths(2); // the climate api might not yet have data for the last month
 
         for (int year = lastMonth.getYear() - 50; year <= lastMonth.getYear(); year++) {
             double sum = 0;
@@ -56,5 +61,4 @@ public class MeanTemperatureApplication {
             }
         }
     }
-
 }
