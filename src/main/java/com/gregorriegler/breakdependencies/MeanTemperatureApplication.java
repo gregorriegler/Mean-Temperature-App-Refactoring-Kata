@@ -30,7 +30,8 @@ public class MeanTemperatureApplication {
     private static final Logger LOG = LoggerFactory.getLogger(MeanTemperatureApplication.class);
 
     public static void main(String[] args) {
-        new MeanTemperatureApplication().printHistoricalMeanTemperatures(Clock.systemDefaultZone());
+        MeanTemperatureApplication application = new MeanTemperatureApplication();
+        application.printHistoricalMeanTemperatures(Clock.systemDefaultZone());
     }
 
     public void printHistoricalMeanTemperatures(Clock clock) {
