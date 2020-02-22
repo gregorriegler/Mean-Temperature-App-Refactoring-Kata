@@ -41,8 +41,8 @@ public class MeanTemperatureApplication {
             double sum = 0;
             long count = 0;
 
+            YearMonth begin = lastMonth.withYear(year).minusMonths(3);
             YearMonth end = lastMonth.withYear(year);
-            YearMonth begin = end.minusMonths(3);
 
             try {
                 URL url = new URL("https://api.meteostat.net/v1/history/monthly?station=11035&start=" + begin + "&end=+" + end + "&key=" + System.getProperty("key"));
