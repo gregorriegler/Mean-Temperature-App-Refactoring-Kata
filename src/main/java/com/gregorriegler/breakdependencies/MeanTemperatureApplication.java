@@ -56,7 +56,7 @@ public class MeanTemperatureApplication {
 
                 if (count > 0) {
                     double mean = sum / count;
-                    ThirdPartyUtil.outputMean(begin, end, mean);
+                    ThirdPartyUtil.outline(begin, end, mean);
                 }
             } catch (Exception e) {
                 LOG.error("an error occured");
