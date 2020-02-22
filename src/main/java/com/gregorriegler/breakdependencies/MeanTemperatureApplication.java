@@ -28,9 +28,14 @@ import java.time.YearMonth;
  */
 public class MeanTemperatureApplication {
     private static final Logger LOG = LoggerFactory.getLogger(MeanTemperatureApplication.class);
+    private final Outliner outliner;
+
+    public MeanTemperatureApplication(Outliner outliner) {
+        this.outliner = outliner;
+    }
 
     public static void main(String[] args) {
-        MeanTemperatureApplication application = new MeanTemperatureApplication();
+        MeanTemperatureApplication application = new MeanTemperatureApplication(new Outliner());
         application.printHistoricalMeanTemperatures(Clock.systemDefaultZone());
     }
 
@@ -56,7 +61,7 @@ public class MeanTemperatureApplication {
 
                 if (count > 0) {
                     double mean = sum / count;
-                    ThirdPartyUtil.outline(begin, end, mean);
+                    outliner.outline(begin, end, mean);
                 }
             } catch (Exception e) {
                 LOG.error("an error occured");
