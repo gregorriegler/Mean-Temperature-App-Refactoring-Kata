@@ -49,7 +49,8 @@ public class MeanTemperatureApplication {
                 }
 
                 if (count > 0) {
-                    System.out.println(begin + " to " + end + " mean temperature: " + Math.round(sum / count * 10) / 10D + " °C");
+                    double mean = sum / count;
+                    ThirdPartyUtil.outline(end, begin, mean);
                 }
             } catch (Exception e) {
                 LOG.error("an error occured");
