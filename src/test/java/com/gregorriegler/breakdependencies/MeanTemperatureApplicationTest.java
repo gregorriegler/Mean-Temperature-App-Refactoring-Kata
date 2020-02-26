@@ -10,7 +10,7 @@ import java.time.ZoneOffset;
 class MeanTemperatureApplicationTest {
 
     @Test
-    void should_print_temperatures() {
+    void should_outline_temperatures() {
         Outliner outliner = Mockito.mock(Outliner.class);
         MeanTemperatureApplication application = new MeanTemperatureApplication(outliner);
         application.printHistoricalMeanTemperatures(Clock.fixed(Instant.parse("2020-05-20T00:00:00Z"), ZoneOffset.UTC));

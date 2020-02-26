@@ -64,7 +64,7 @@ public class MeanTemperatureApplication {
                     outliner.outline(begin, end, mean);
                 }
             } catch (Exception e) {
-                LOG.error("an error occured");
+                LOG.error("an error occured", e);
             }
         }
     }
