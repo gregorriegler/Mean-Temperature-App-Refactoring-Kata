@@ -13,6 +13,6 @@ class MeanTemperatureApplicationTest {
     void should_print_temperatures() {
         Outliner outliner = Mockito.mock(Outliner.class);
         MeanTemperatureApplication application = new MeanTemperatureApplication(outliner);
-        application.printHistoricalMeanTemperatures(Clock.fixed(Instant.parse("2020-01-20T00:00:00Z"), ZoneOffset.UTC));
+        application.printHistoricalMeanTemperatures(Clock.fixed(Instant.parse("2020-05-20T00:00:00Z"), ZoneOffset.UTC));
     }
 }

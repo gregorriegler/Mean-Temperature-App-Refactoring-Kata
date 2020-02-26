@@ -46,7 +46,7 @@ public class MeanTemperatureApplication {
             double sum = 0;
             long count = 0;
 
-            YearMonth begin = lastMonth.withYear(year).minusMonths(3);
+            YearMonth begin = lastMonth.withYear(year).minusMonths(2);
             YearMonth end = lastMonth.withYear(year);
 
             try {
