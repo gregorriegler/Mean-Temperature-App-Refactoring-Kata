@@ -4,13 +4,14 @@ import com.jayway.jsonpath.JsonPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.Clock;
 import java.time.YearMonth;
 
 /**
  * Prints the mean temperatures of 3 recent months measured in Vienna over the last 50 years for comparison.
- *
+ * <p>
  * Example Output:
  * 1969-09 to 1969-12 mean temperature: 7.7 °C
  * 1970-09 to 1970-12 mean temperature: 8.2 °C
@@ -49,24 +50,35 @@ public class MeanTemperatureApplication {
             YearMonth begin = lastMonth.withYear(year).minusMonths(2);
             YearMonth end = lastMonth.withYear(year);
 
+
+            double[] meanList = {};
             try {
-                URL url = new URL("https://api.meteostat.net/v1/history/monthly?station=11035&start=" + begin + "&end=+" + end + "&key=" + System.getProperty("key"));
-                double[] meanList = JsonPath.parse(url).read("$.data[*].temperature_mean", double[].class);
-
-                for (int i = 0; i < meanList.length; i++) {
-                    double mean = meanList[i];
-                    sum += mean;
-                    count++;
-                }
-
-                if (count > 0) {
-                    double mean = sum / count;
-                    outliner.outline(begin, end, mean);
-                }
+                meanList = fetchMeanList(begin, end);
             } catch (Exception e) {
-                LOG.error("an error occured", e);
+                logError(e);
             }
+
+            for (int i = 0; i < meanList.length; i++) {
+                double mean = meanList[i];
+                sum += mean;
+                count++;
+            }
+
+            if (count > 0) {
+                double mean = sum / count;
+                outliner.outline(begin, end, mean);
+            }
+
         }
+    }
+
+    protected void logError(Exception e) {
+        LOG.error("an error occured", e);
+    }
+
+    protected double[] fetchMeanList(YearMonth begin, YearMonth end) throws IOException {
+        URL url = new URL("https://api.meteostat.net/v1/history/monthly?station=11035&start=" + begin + "&end=+" + end + "&key=" + System.getProperty("key"));
+        return JsonPath.parse(url).read("$.data[*].temperature_mean", double[].class);
     }
 
 }
