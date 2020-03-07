@@ -32,9 +32,6 @@
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>1.4.11</version>
-                <configuration>
-                    <mutators>ALL</mutators>
-                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.pitest</groupId>

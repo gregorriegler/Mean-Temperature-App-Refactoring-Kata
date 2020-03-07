@@ -43,6 +43,21 @@ class MeanTemperatureApplicationTest {
     }
 
     @Test
+    void noresults_temperatures() {
+        Outliner outliner = Mockito.mock(Outliner.class);
+        MeanTemperatureApplication application = new MeanTemperatureApplication(outliner) {
+            @Override
+            protected double[] fetchMeanList(YearMonth begin, YearMonth end) throws IOException {
+                return new double[]{};
+            }
+        };
+
+        application.printHistoricalMeanTemperatures(Clock.fixed(Instant.parse("2020-05-20T00:00:00Z"), ZoneOffset.UTC));
+
+        verifyNoInteractions(outliner);
+    }
+
+    @Test
     void should_throw_error() {
         Outliner outliner = Mockito.mock(Outliner.class);
         List<Exception> errorsLogged = new ArrayList<>();
