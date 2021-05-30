@@ -1,4 +1,7 @@
-This is a Kata to practice the refactoring of legacy code with hard dependencies.
+Mean Temperature App Refactoring Kata
+-------------------------------------
+
+This is a Kata to practice the refactoring and testing of legacy code that has hard dependencies.
 Bring the MeanTemperatureApplication under test and refactor without taking any risk.
 
 ### Patterns that might help
