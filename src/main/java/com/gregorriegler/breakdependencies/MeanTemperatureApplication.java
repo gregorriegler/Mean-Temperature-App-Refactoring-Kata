@@ -28,7 +28,7 @@ import java.time.YearMonth;
 public class MeanTemperatureApplication {
     private static final Logger LOG = LoggerFactory.getLogger(MeanTemperatureApplication.class);
 
-    private static ThirdPartyService thirdPartyService = new ThirdPartyService();
+    private static ThirdPartyService thirdPartyService = ThirdPartyService.getInstance();
 
     public static void main(String[] args) {
         YearMonth lastMonth = YearMonth.now().minusMonths(2); // the climate api might not yet have data for the last month

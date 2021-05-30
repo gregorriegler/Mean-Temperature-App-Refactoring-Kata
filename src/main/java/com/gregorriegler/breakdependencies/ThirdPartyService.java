@@ -7,7 +7,16 @@ import java.time.YearMonth;
  */
 public class ThirdPartyService {
 
-    public ThirdPartyService() {
+    private static ThirdPartyService instance;
+
+    public static ThirdPartyService getInstance() {
+        if (instance == null) {
+            instance = new ThirdPartyService();
+        }
+        return instance;
+    }
+
+    private ThirdPartyService() {
         throw new RuntimeException("failed to connect to third party");
     }
 
