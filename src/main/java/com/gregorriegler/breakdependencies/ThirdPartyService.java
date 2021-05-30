@@ -5,12 +5,13 @@ import java.time.YearMonth;
 /**
  * This is some third party util you are not allowed to change
  */
-public class ThirdPartyUtil {
+public class ThirdPartyService {
 
-    private ThirdPartyUtil() {
+    public ThirdPartyService() {
+        throw new RuntimeException("failed to connect to third party");
     }
 
-    public static void outline(YearMonth end, YearMonth begin, double mean) {
+    public void outline(YearMonth end, YearMonth begin, double mean) {
         System.out.println(begin + " to " + end + " mean temperature: " + Math.round(mean * 10) / 10D + " °C");
     }
 }

@@ -28,6 +28,8 @@ import java.time.YearMonth;
 public class MeanTemperatureApplication {
     private static final Logger LOG = LoggerFactory.getLogger(MeanTemperatureApplication.class);
 
+    private static ThirdPartyService thirdPartyService = new ThirdPartyService();
+
     public static void main(String[] args) {
         YearMonth lastMonth = YearMonth.now().minusMonths(2); // the climate api might not yet have data for the last month
 
@@ -50,10 +52,10 @@ public class MeanTemperatureApplication {
 
                 if (count > 0) {
                     double mean = sum / count;
-                    ThirdPartyUtil.outline(end, begin, mean);
+                    thirdPartyService.outline(end, begin, mean);
                 }
             } catch (Exception e) {
-                LOG.error("an error occured");
+                LOG.error("an error occured", e);
             }
         }
     }
